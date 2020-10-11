@@ -8,11 +8,11 @@ I have added a bunch of random code to start things off and see if there is any 
 
 The idea of the game (so far) is to collect pull request icons and kill bugs. I'm guessing we should have a timer on the game and 3 pull requests need to be found / collected before it runs out? Open to suggestions, this is just a bit of fun.
 
-Graveyard Assets from (LarryIRL @ opengameart)[https://opengameart.org/content/seamless-2d-graveyard-background]
+Graveyard Assets from [LarryIRL @ opengameart](https://opengameart.org/content/seamless-2d-graveyard-background)
 
-This project is using (Phaser 3)[https://www.phaser.io/phaser3] Javascript game framework.
+This project is using [Phaser 3](https://www.phaser.io/phaser3) Javascript game framework.
 
-Project template forked from ('Phaser 3 project template')[https://github.com/photonstorm/phaser3-project-template].
+Project template forked from ['Phaser 3 project template'](https://github.com/photonstorm/phaser3-project-template).
 
 ## Requirements
 
