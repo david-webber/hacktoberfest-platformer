@@ -6,7 +6,7 @@ I'm starting this project late, but there's still 20 days left, we can do it!
 
 I have added a bunch of random code to start things off and see if there is any interest.
 
-The idea of the game (so far) is to collect pull request icons and kill bugs. I'm guessing we should have a timer on the game and 3 pull requests need to be found / collected before it runs out? Open to suggestions, this is just a bit of fun.
+The idea of the game (so far) is to collect pull request icons and kill bugs. I'm guessing we should have a timer on the game and 4 pull requests need to be found / collected before it runs out? Open to suggestions, this is just a bit of fun.
 
 Graveyard Assets from [LarryIRL @ opengameart](https://opengameart.org/content/seamless-2d-graveyard-background)
 
