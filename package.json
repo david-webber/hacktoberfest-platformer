@@ -1,13 +1,12 @@
 {
-  "name": "phaser3-project-template",
+  "name": "hacktoberfest-platformer",
   "version": "1.1.0",
-  "description": "A Phaser 3 Project Template",
+  "description": "A silly game",
   "main": "src/index.js",
   "scripts": {
     "build": "webpack --config webpack/prod.js ",
     "start": "webpack-dev-server --config webpack/base.js --open"
   },
-  "author": "David Webber",
   "license": "MIT",
   "licenseUrl": "http://www.opensource.org/licenses/mit-license.php",
   "devDependencies": {
