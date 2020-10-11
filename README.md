@@ -1,4 +1,4 @@
-# Hacktoberfest Platformer
+# Hacktoberfest Platformer 🎮 🎃
 
 Let's build a platformer game for hacktoberfest!
 
