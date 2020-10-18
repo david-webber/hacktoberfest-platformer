@@ -39,22 +39,29 @@ export default class extends Phaser.Scene {
 		this.horizon = this.add.tileSprite(window.innerWidth / 2, window.innerHeight / 2 - 100, window.innerWidth * 2, 400, 'horizon');
 		this.tilesprite2 = this.add.tileSprite(window.innerWidth / 2, window.innerHeight / 2 - 100, window.innerWidth * 2, 500, 'gy3');
 		this.tilesprite = this.add.tileSprite(window.innerWidth / 2, window.innerHeight / 2, window.innerWidth * 2, 500, 'bg');
-		this.path = this.add.tileSprite(window.innerWidth / 2, window.innerHeight - 300, window.innerWidth * 2, 50, 'path');
+		this.path = this.add.tileSprite(window.innerWidth / 2, window.innerHeight - 50, window.innerWidth * 2, 50, 'path');
 
 		this.horizon.setTint(0x0000dd, 0xddd000, 0x0000dd, 0xdd0000);
 		this.tilesprite2.setTint(0x2222ee, 0xfff000, 0xffffee, 0xee1111);
 		this.tilesprite.setTint(0x999999);
 
-		// const platforms = this.physics.add.staticGroup();
-		// platforms.create(600, 800, 'platform').setScale(-0.5, 0.5).refreshBody();
+		const platforms = this.physics.add.staticGroup();
+		// bottom right platform
+		platforms.create(1150, 557, 'platform').setScale(0.6).refreshBody();
+		// top right platform
+		platforms.create(1130, 200, 'platform').setScale(0.1).refreshBody();
+		// mid left platform
+		platforms.create(198, 250, 'platform').setScale(0.4);
 
+		
+		// added little bounce to sprite
+		this.player = this.physics.add.sprite(100, 450, 'dude');
 
-
-		this.player = this.physics.add.sprite(700, 820, 'dude');
-
+		this.physics.add.collider(this.player, platforms);
 		this.player.setBounce(0.2);
-		// this.player.setCollideWorldBounds(true);
+		this.player.setCollideWorldBounds(true);
 
+		
 		this.anims.create({
 			key: 'left',
 			frames: this.anims.generateFrameNumbers('dude', {
@@ -88,6 +95,27 @@ export default class extends Phaser.Scene {
 
 		this.cursors = this.input.keyboard.createCursorKeys();
 
+		prs = this.physics.add.group({
+			key: 'pr',
+			repeat: 1,
+			setXY: {
+				x: 1,
+				y: 5,
+				stepX: 30
+			}
+		});
+
+		prs.children.iterate(function (child) {
+			child.setBounceY(Phaser.Math.FloatBetween(0.1, 0.1));
+		});
+
+		this.physics.add.collider(prs, platforms);
+		this.physics.add.overlap(this.player, prs, collectPr, null, this);
+
+		function collectPr (player, pr) {
+			pr.disableBody(true, true);
+		}	
+
 	}
 
 
@@ -95,10 +123,9 @@ export default class extends Phaser.Scene {
 
 		if (this.cursors.left.isDown) {
 			this.player.setVelocityX(-160);
-
 			this.player.anims.play('left', true);
 		} else if (this.cursors.right.isDown) {
-			// this.player.setVelocityX(160);
+			this.player.setVelocityX(160);
 			this.tilesprite.tilePositionX += 1;
 			this.tilesprite2.tilePositionX += 0.8;
 			this.horizon.tilePositionX += 0.4;
