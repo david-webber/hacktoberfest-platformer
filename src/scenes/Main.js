@@ -35,33 +35,38 @@ export default class extends Phaser.Scene {
 	}
 
 	create() {
+		const bounds = {
+			width: this.game.config.width * 5,
+			height: this.game.config.height
+		};
 
-		this.horizon = this.add.tileSprite(window.innerWidth / 2, window.innerHeight / 2 - 100, window.innerWidth * 2, 400, 'horizon');
-		this.tilesprite2 = this.add.tileSprite(window.innerWidth / 2, window.innerHeight / 2 - 100, window.innerWidth * 2, 500, 'gy3');
-		this.tilesprite = this.add.tileSprite(window.innerWidth / 2, window.innerHeight / 2, window.innerWidth * 2, 500, 'bg');
-		this.path = this.add.tileSprite(window.innerWidth / 2, window.innerHeight - 50, window.innerWidth * 2, 50, 'path');
+		this.physics.world.setBounds(0, 0, bounds.width, bounds.height);
+
+		this.horizon = this.add.tileSprite(0, this.game.config.height - 260, bounds.width * 2, 400, 'horizon').setScale(1.5);
+		this.tilesprite = this.add.tileSprite(0, this.game.config.height - 250, bounds.width * 2, 500, 'bg');
+		this.path = this.add.tileSprite(0, this.game.config.height, bounds.width * 2, 50, 'path')
 
 		this.horizon.setTint(0x0000dd, 0xddd000, 0x0000dd, 0xdd0000);
-		this.tilesprite2.setTint(0x2222ee, 0xfff000, 0xffffee, 0xee1111);
 		this.tilesprite.setTint(0x999999);
+
 
 		const platforms = this.physics.add.staticGroup();
 		// bottom right platform
-		platforms.create(1150, 557, 'platform').setScale(0.6).refreshBody();
+		platforms.create(1150, this.game.config.height - (this.game.config.height / 10), 'platform').setScale(0.6).refreshBody();
 		// top right platform
 		platforms.create(1130, 200, 'platform').setScale(0.1).refreshBody();
 		// mid left platform
-		platforms.create(198, 250, 'platform').setScale(0.4);
+		platforms.create(198, 250, 'platform').setScale(0.4).refreshBody();
 
-		
+
 		// added little bounce to sprite
 		this.player = this.physics.add.sprite(100, 450, 'dude');
 
 		this.physics.add.collider(this.player, platforms);
 		this.player.setBounce(0.2);
 		this.player.setCollideWorldBounds(true);
+		this.player.speed = 200;
 
-		
 		this.anims.create({
 			key: 'left',
 			frames: this.anims.generateFrameNumbers('dude', {
@@ -95,9 +100,9 @@ export default class extends Phaser.Scene {
 
 		this.cursors = this.input.keyboard.createCursorKeys();
 
-		prs = this.physics.add.group({
+		const prs = this.physics.add.group({
 			key: 'pr',
-			repeat: 1,
+			repeat: 2,
 			setXY: {
 				x: 1,
 				y: 5,
@@ -112,32 +117,35 @@ export default class extends Phaser.Scene {
 		this.physics.add.collider(prs, platforms);
 		this.physics.add.overlap(this.player, prs, collectPr, null, this);
 
-		function collectPr (player, pr) {
+		function collectPr(player, pr) {
 			pr.disableBody(true, true);
-		}	
+		}
+
+		this.cameras.main.setSize(this.game.config.width, this.game.config.height);
+		this.cameras.main.setBounds(0, 0, bounds.width, this.game.config.height + 20);
+		this.cameras.main.setZoom(1.5);
+		this.cameras.main.startFollow(this.player, true, 0.05, 0.5, -this.game.config.width / 6, 0);
 
 	}
 
 
 	update() {
 
+		this.horizon.tilePositionX = 0 - this.cameras.main.scrollX * 0.6;
+		this.tilesprite.tilePositionX = 0 - this.cameras.main.scrollX * 0.5;
+
 		if (this.cursors.left.isDown) {
-			this.player.setVelocityX(-160);
+			this.player.setVelocityX(-this.player.speed);
 			this.player.anims.play('left', true);
 		} else if (this.cursors.right.isDown) {
-			this.player.setVelocityX(160);
-			this.tilesprite.tilePositionX += 1;
-			this.tilesprite2.tilePositionX += 0.8;
-			this.horizon.tilePositionX += 0.4;
-			this.path.tilePositionX += 1;
+			this.player.setVelocityX(this.player.speed);
 			this.player.anims.play('right', true);
 		} else {
 			this.player.setVelocityX(0);
-
 			this.player.anims.play('turn');
 		}
 
-		if (this.cursors.up.isDown && this.player.body.touching.down) {
+		if (this.cursors.up.isDown && this.player.body.onFloor()) {
 			this.player.setVelocityY(-330);
 		}
 
